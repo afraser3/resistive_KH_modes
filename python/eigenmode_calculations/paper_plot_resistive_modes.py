@@ -5,28 +5,19 @@ import kolmogorov_EVP
 
 plt.rcParams.update({"text.usetex": True})
 
-Pm1 = 0.1
-HB1 = 0.1
-Re1 = 100.0
-Rm1 = Pm1 * Re1
-Pm2 = 0.1
-HB2 = 0.6
-Re2 = 1000.0
-Rm2 = Pm2 * Re2
-
-mode_amplitude = 100.0
+Pm = 0.1
+CB = 1.0
+Re = 100.0
+Rm = Pm * Re
 
 delta = 0.0
 N = 33
-plot_fname = 'plots/KH_mode_structures.pdf'
+plot_fname = 'plots/resistive_mode_structures_isolated.pdf'
 ns = np.array(range(-int((N - 1) / 2), int((N + 1) / 2), 1))  # these are wavenumbers in shear direction
 # ns_ishift = np.fft.ifftshift(ns)  # same thing, but with 'standard' FFTW order, i.e., [0, 1, 2, ..., -2, -1]
 
 ks = np.append(np.geomspace(0.0001, 0.05, num=100, endpoint=False),
                np.linspace(0.05, 0.2, num=50, endpoint=False))
-# ks = np.linspace(0.1, 0.3)
-ks = np.append(np.linspace(0.01, 0.275, num=100, endpoint=False),
-               np.linspace(0.275, 0.6, num=50))
 
 scales = 1
 
@@ -57,13 +48,15 @@ def xz_from_kxkz(phi_kx_ishift, ns_ishift, kz, scalefac=1):
     return phi_xz, xs, zs
 
 
-gammas1 = kolmogorov_EVP.gamma_over_k(delta, HB1, Re1, Rm1, ks, N)
-maxind1 = np.argmax(gammas1)
-kmax1 = ks[maxind1]
-gammax1 = gammas1[maxind1]
-lmat1 = kolmogorov_EVP.Lmat(delta, HB1, Re1, Rm1, kmax1, N)
-w, v = np.linalg.eig(lmat1)
-ind1 = np.argmax(-np.imag(w))
+gammas = kolmogorov_EVP.gamma_over_k(delta, CB, Re, Rm, ks, N)
+maxind = np.argmax(gammas)
+kmax = ks[maxind]
+gammax = gammas[maxind]
+lmat = kolmogorov_EVP.Lmat(delta, CB, Re, Rm, kmax, N)
+w, v = np.linalg.eig(lmat)
+ind1 = np.argmax(-np.imag(w))  # index in w,v of fastest-growing mode
+ind2 = np.argmin(np.abs(w + np.conj(w[ind1])))  # index of its symmetric pair
+
 omega1 = w[ind1]
 full_mode1 = v[:, ind1]
 phi1 = full_mode1[::2]
@@ -72,19 +65,12 @@ norm1_phi = phi1[int(len(ns)/2)+1]
 # norm1_psi = psi1[int(len(ns)/2)+1]
 phi1 = phi1/norm1_phi
 psi1 = psi1/norm1_phi
-TE1 = kolmogorov_EVP.energy_from_streamfunc(phi1, kmax1, ns) + HB1*kolmogorov_EVP.energy_from_streamfunc(psi1, kmax1, ns)
+TE1 = kolmogorov_EVP.energy_from_streamfunc(phi1, kmax, ns) + CB*kolmogorov_EVP.energy_from_streamfunc(psi1, kmax, ns)
 phi1 = phi1/np.sqrt(TE1)
 psi1 = psi1/np.sqrt(TE1)
-phi1 = phi1*1000
-psi1 = psi1*1000
+phi1 = phi1*2000.0
+psi1 = psi1*2000.0
 
-gammas2 = kolmogorov_EVP.gamma_over_k(delta, HB2, Re2, Rm2, ks, N)
-maxind2 = np.argmax(gammas2)
-kmax2 = ks[maxind2]
-gammax2 = gammas2[maxind2]
-lmat2 = kolmogorov_EVP.Lmat(delta, HB2, Re2, Rm2, kmax2, N)
-w, v = np.linalg.eig(lmat2)
-ind2 = np.argmax(-np.imag(w))
 omega2 = w[ind2]
 full_mode2 = v[:, ind2]
 phi2 = full_mode2[::2]
@@ -93,28 +79,28 @@ norm2_phi = phi2[int(len(ns)/2)+1]
 # norm2_psi = psi2[int(len(ns)/2)+1]
 phi2 = -phi2/norm2_phi
 psi2 = -psi2/norm2_phi
-TE2 = kolmogorov_EVP.energy_from_streamfunc(phi2, kmax2, ns) + HB2*kolmogorov_EVP.energy_from_streamfunc(psi2, kmax2, ns)
+TE2 = kolmogorov_EVP.energy_from_streamfunc(phi2, kmax, ns) + CB*kolmogorov_EVP.energy_from_streamfunc(psi2, kmax, ns)
 phi2 = phi2/np.sqrt(TE2)
 psi2 = psi2/np.sqrt(TE2)
-phi2 = phi2*2000
-psi2 = psi2*2000
+phi2 = phi2*2000.0
+psi2 = psi2*2000.0
 
 phi_ishift1 = np.fft.ifftshift(phi1)
 psi_ishift1 = np.fft.ifftshift(psi1)
 phi_ishift2 = np.fft.ifftshift(phi2)
 psi_ishift2 = np.fft.ifftshift(psi2)
 
-phi_xz1, xs1, zs1 = xz_from_kxkz(phi_ishift1, np.fft.ifftshift(ns), kmax1, scalefac=scales)
+phi_xz1, xs1, zs1 = xz_from_kxkz(phi_ishift1, np.fft.ifftshift(ns), kmax, scalefac=scales)
 xx1, zz1 = np.meshgrid(xs1, zs1)
-psi_xz1 = xz_from_kxkz(psi_ishift1, np.fft.ifftshift(ns), kmax1, scalefac=scales)[0]
+psi_xz1 = xz_from_kxkz(psi_ishift1, np.fft.ifftshift(ns), kmax, scalefac=scales)[0]
 if (not np.allclose(phi_xz1, np.real(phi_xz1))) and (not np.allclose(psi_xz1, np.real(psi_xz1))):
     raise RuntimeError("phi and/or psi isn't real, something is wrong")
 else:
     phi_xz1 = np.real(phi_xz1)
     psi_xz1 = np.real(psi_xz1)
-phi_xz2, xs2, zs2 = xz_from_kxkz(phi_ishift2, np.fft.ifftshift(ns), kmax2, scalefac=scales)
+phi_xz2, xs2, zs2 = xz_from_kxkz(phi_ishift2, np.fft.ifftshift(ns), kmax, scalefac=scales)
 xx2, zz2 = np.meshgrid(xs2, zs2)
-psi_xz2 = xz_from_kxkz(psi_ishift2, np.fft.ifftshift(ns), kmax2, scalefac=scales)[0]
+psi_xz2 = xz_from_kxkz(psi_ishift2, np.fft.ifftshift(ns), kmax, scalefac=scales)[0]
 if (not np.allclose(phi_xz2, np.real(phi_xz2))) and (not np.allclose(psi_xz2, np.real(psi_xz2))):
     raise RuntimeError("phi and/or psi isn't real, something is wrong")
 else:
