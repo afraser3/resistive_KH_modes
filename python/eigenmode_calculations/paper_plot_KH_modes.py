@@ -53,7 +53,7 @@ def xz_from_kxkz(phi_kx_ishift, ns_ishift, kz, scalefac=1):
     phi_kxkz_ishift[:, -1] = np.conj(phi_kx_ishift_flip)
     xs = np.linspace(0, 2.0*np.pi, num=int(scalefac*len(ns_ishift)), endpoint=False)
     zs = np.linspace(0, 2.0*np.pi/kz, num=int(scalefac*len(ns_ishift)), endpoint=False)
-    phi_xz = np.fft.ifft2(phi_kxkz_ishift)
+    phi_xz = np.fft.ifft2(phi_kxkz_ishift)*len(xs)*len(zs)
     return phi_xz, xs, zs
 
 
@@ -75,8 +75,8 @@ psi1 = psi1/norm1_phi
 TE1 = kolmogorov_EVP.energy_from_streamfunc(phi1, kmax1, ns) + HB1*kolmogorov_EVP.energy_from_streamfunc(psi1, kmax1, ns)
 phi1 = phi1/np.sqrt(TE1)
 psi1 = psi1/np.sqrt(TE1)
-phi1 = phi1*1000
-psi1 = psi1*1000
+#phi1 = phi1*1000
+#psi1 = psi1*1000
 
 gammas2 = kolmogorov_EVP.gamma_over_k(delta, HB2, Re2, Rm2, ks, N)
 maxind2 = np.argmax(gammas2)
@@ -96,8 +96,8 @@ psi2 = -psi2/norm2_phi
 TE2 = kolmogorov_EVP.energy_from_streamfunc(phi2, kmax2, ns) + HB2*kolmogorov_EVP.energy_from_streamfunc(psi2, kmax2, ns)
 phi2 = phi2/np.sqrt(TE2)
 psi2 = psi2/np.sqrt(TE2)
-phi2 = phi2*2000
-psi2 = psi2*2000
+#phi2 = phi2*2000
+#psi2 = psi2*2000
 
 phi_ishift1 = np.fft.ifftshift(phi1)
 psi_ishift1 = np.fft.ifftshift(psi1)
@@ -133,24 +133,24 @@ ax1.set_ylabel(r'$z$', fontsize='large')
 ax1.set_xlabel(r'$x$', fontsize='large')
 # plt.title(r'$\psi$, fastest-growing mode, $Re = {}$, $C_B = {}$'.format(int(Re1), HB1), fontsize='large')
 # plt.title(r'Fastest-growing mode, $Re = {}$, $C_B = {}$'.format(int(Re1), HB1), fontsize='large')
-ax1.set_title(r'$\psi$, ordinary KH')
+ax1.set_title(r'$\psi$, sinuous mode')
 ax2 = fig.add_subplot(gs1[0, 1])
 im2 = ax2.contourf(xs1, zs1, psi_xz1.T)
 cbar2 = fig.colorbar(im2, ax=ax2)
 ax2.set_xlabel(r'$x$', fontsize='large')
 # plt.title(r'$A$, fastest-growing mode, $Re = {}$, $C_B = {}$'.format(int(Re1), HB1), fontsize='large')
-ax2.set_title(r'$A$, ordinary KH')
+ax2.set_title(r'$A$, sinuous mode')
 
 
 ax3 = fig.add_subplot(gs2[0, 0])
 im3 = ax3.contourf(xs2, zs2, phi_xz2.T)
 cbar3 = fig.colorbar(im3, ax=ax3)
-ax3.set_title(r'$\psi$, strange KH')
+ax3.set_title(r'$\psi$, varicose mode')
 ax3.set_xlabel(r'$x$', fontsize='large')
 ax3.set_ylabel(r'$z$', fontsize='large')
 ax4 = fig.add_subplot(gs2[0, 1])
 im4 = ax4.contourf(xs2, zs2, psi_xz2.T)
-ax4.set_title(r'$A$, strange KH')
+ax4.set_title(r'$A$, varicose mode')
 # plt.ylabel(r'$z$')
 ax4.set_xlabel(r'$x$', fontsize='large')
 cbar4 = fig.colorbar(im4, ax=ax4)
