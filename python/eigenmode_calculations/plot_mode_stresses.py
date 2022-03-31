@@ -7,8 +7,8 @@ plt.rcParams.update({"text.usetex": True})
 
 phases = np.linspace(0, 2.0*np.pi, num=8, endpoint=False)
 Pm = 0.1
-HB = 1.0  # 0.55  # 1.0
-Re = 100.0  # 1000.0  # 100.0
+HB = 31.4  # 1.0  # 0.55  # 1.0
+Re = 17.8  # 100.0  # 1000.0  # 100.0
 Rm = Pm * Re
 delta = 0.0
 N = 33
@@ -108,4 +108,4 @@ plt.xlim((0, 2.0*np.pi))
 plt.ylim((-1, 1))
 
 plt.savefig(fname)
-plt.show()
+# plt.show()

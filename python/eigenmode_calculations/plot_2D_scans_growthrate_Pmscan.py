@@ -73,7 +73,8 @@ ax1.contourf(Res1, HBs1, contains_strange_mode1.astype(int).T, [-1, 0, 1], hatch
 ax1.contour(Res1, HBs1, contains_strange_mode1.astype(int).T, [0, 1], colors='k', linewidths=2.0)
 ax1.set_ylabel(r'$C_B$')
 # plt.xlabel(r'$\mathrm{Re}$')
-ax1.set_title(r'$\Re[\lambda]$ for $Pm = {:3.1f}$'.format(Pm1))
+# ax1.set_title(r'$\mathrm{{Re}}[\lambda]$ for $Pm = {:3.1f}$'.format(Pm1))
+ax1.set_title(r'$Pm = {:3.1f}$'.format(Pm1))
 
 # plt.subplot(1, 3, 2)
 im = ax2.contourf(Res2, HBs2, -np.imag(omegas2.T), levels=np.geomspace(1e-5, 1e0, 11), norm=colors.LogNorm())
@@ -84,19 +85,26 @@ ax2.contour(Res2, HBs2, contains_ordinary_mode2.astype(int).T, [0, 1], colors='k
 ax2.contourf(Res2, HBs2, contains_strange_mode2.astype(int).T, [-1, 0, 1], hatches=[None, '/', None], alpha=0)
 ax2.contour(Res2, HBs2, contains_strange_mode2.astype(int).T, [0, 1], colors='k', linewidths=2.0)
 # ax2.xlabel(r'$\mathrm{Re}$')
-ax2.set_title(r'$\Re[\lambda]$ for $Pm = {:3.1f}$'.format(Pm2))
+# ax2.set_title(r'$\mathrm{{Re}}[\lambda]$ for $Pm = {:3.1f}$'.format(Pm2))
+ax2.set_title(r'$Pm = {:3.1f}$'.format(Pm2))
 
 # plt.subplot(1, 3, 3)
 im = ax3.contourf(Res3, HBs3, -np.imag(omegas3.T), levels=np.geomspace(1e-5, 1e0, 11), norm=colors.LogNorm())
-fig.colorbar(im, ax=axes.ravel().tolist())
+fig.colorbar(im, ax=axes.ravel().tolist(), label=r'$\mathrm{Re}[\lambda]$')
 # ax3.contourf(Res3, HBs3, np.abs(np.real(omegas3)).T, [0.0, 1e-10], hatches=['/', None], alpha=0)
 # ax3.contour(Res3, HBs3, np.abs(np.real(omegas3)).T, [0.0, 1e-10], colors='k', linewidths=2.0)
 ax3.contourf(Res3, HBs3, contains_ordinary_mode3.astype(int).T, [-1, 0, 1], hatches=[None, '\\', None], alpha=0)
 ax3.contour(Res3, HBs3, contains_ordinary_mode3.astype(int).T, [0, 1], colors='k', linewidths=2.0)
 ax3.contourf(Res3, HBs3, contains_strange_mode3.astype(int).T, [-1, 0, 1], hatches=[None, '/', None], alpha=0)
 ax3.contour(Res3, HBs3, contains_strange_mode3.astype(int).T, [0, 1], colors='k', linewidths=2.0)
+# re2 = 1e3
+# cb2 = 6e-1  # cb1*(re1/re2)**2.0
+# cb1 = 1e0  # cb2*(re2/re1)**2.0
+# re1 = np.sqrt(cb2/cb1)*re2
+# ax3.plot([re1, re2], [cb1, cb2], '--', c='orange')
 # ax3.xlabel(r'$\mathrm{Re}$')
-ax3.set_title(r'$\Re[\lambda]$ for $Pm = {:3.1f}$'.format(Pm3))
+# ax3.set_title(r'$\mathrm{{Re}}[\lambda]$ for $Pm = {:3.1f}$'.format(Pm3))
+ax3.set_title(r'$Pm = {:3.1f}$'.format(Pm3))
 
 for ax in axes.flat:
     ax.set_xscale('log')

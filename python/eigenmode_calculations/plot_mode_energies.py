@@ -1,19 +1,22 @@
 import numpy as np
 from matplotlib import pyplot as plt
-from matplotlib.backends.backend_pdf import PdfPages
 import kolmogorov_EVP
 
 plt.rcParams.update({"text.usetex": True})
 
 phases = np.linspace(0, 2.0*np.pi, num=50, endpoint=False)
-Pm = 0.1
-HB = 1.0  # 0.55  # 1.0
-Re = 100.0  # 1000.0  # 100.0
+Pm = 0.9
+HB = 1.0  ## 1.0  # 0.55  # 1.0
+# HB = 124.7598
+Re = 100.0  ## 100.0  # 1000.0  # 100.0
+# Re = 7.75342
+#HB = 31.4  # 1.0  # 0.55  # 1.0
+#Re = 17.8  # 100.0  # 1000.0  # 100.0
 Rm = Pm * Re
 delta = 0.0
 N = 33
 xs = np.linspace(0, 2.0*np.pi, num=N, endpoint=False)
-fname = 'plots/mode_energies_Pm{}_HB{}_Re{}.pdf'.format(Pm, HB, Re)
+fname = 'plots/mode_energies_Pm{}_HB{}_Re{}_N{}.pdf'.format(Pm, HB, Re, N)
 ns = np.array(range(-int((N - 1) / 2), int((N + 1) / 2), 1))  # these are wavenumbers in shear direction
 # ns_ishift = np.fft.ifftshift(ns)  # same thing, but with 'standard' FFTW order, i.e., [0, 1, 2, ..., -2, -1]
 
@@ -96,5 +99,5 @@ plt.xlabel(r'$\theta$')
 plt.title(r'Total energy $E_K + E_M$')
 plt.xlim((0, 2.0*np.pi))
 
-plt.savefig(fname)
+# plt.savefig(fname)
 plt.show()

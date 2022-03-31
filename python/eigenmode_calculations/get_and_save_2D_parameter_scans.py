@@ -4,9 +4,10 @@ import h5py
 import os
 from pathlib import Path
 
-HB_stars = np.geomspace(0.1, 1.0, num=100)
-Res = np.geomspace(1.0, 1000.0, num=100)
-Pm = 2.0
+HB_stars = np.geomspace(0.1, 100.0, num=100)
+# Res = np.geomspace(1.0, 1000.0, num=100)
+Res = np.geomspace(1.0, 10000.0, num=100)
+Pm = 0.1
 N = 33
 delta = 0.0
 ks = np.append(np.append(np.geomspace(0.0001, 0.05, num=100, endpoint=False),

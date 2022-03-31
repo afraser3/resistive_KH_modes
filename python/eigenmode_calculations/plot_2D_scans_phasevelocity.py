@@ -10,10 +10,10 @@ Pm = 0.1
 N = 33
 delta = 0.0
 out_dir = Path('kolmogorov_2D_scans/Pm{}_N{}_delta{}'.format(Pm, N, delta))
-set_num = 2
+set_num = 5
 out_file = out_dir / 'set_{}.h5'.format(set_num)
 
-plot_fname = 'plots/scan_kmax_phasevelocity_Pm{}_N{}_delta{}.pdf'.format(Pm, N, delta)
+plot_fname = 'plots/scan_phasevelocity_Pm{}_N{}_delta{}.pdf'.format(Pm, N, delta)
 
 with h5py.File(out_file, mode='r') as file:
     ks = np.array(file['scan_values/ks'])
@@ -43,17 +43,17 @@ plt.xscale('log')
 plt.yscale('log')
 plt.colorbar()
 plt.axhline(0.5, c='r', lw=0.5)
-plt.axvline(Res[50], c='k', ls='-')
+# plt.axvline(Res[50], c='k', ls='-')
 plt.ylabel(r'$C_B$')
-plt.xlabel(r'$\mathrm{Re}$')
-plt.title(r'$\Im[\lambda]/k_z$ for $\mathrm{{Pm}} = {:3.1f}$'.format(Pm))
+plt.xlabel(r'$Re$')
+plt.title(r'$|\mathrm{{Im}}[\lambda]|/k_z$ for $Pm = {:3.1f}$'.format(Pm))
 
 plt.subplot(1, 2, 2)
-plt.loglog(HBs, freqs[50]/k_maxs[50], label=r'$\Im[\lambda]/k_z$')
+plt.loglog(HBs, freqs[50]/k_maxs[50], label=r'$|\mathrm{{Im}}[\lambda]|/k_z$')
 plt.loglog(HBs, np.sqrt(HBs), ls='--', c='k', label=r'$\sqrt{C_B}$')
 plt.xlabel(r'$C_B$')
 plt.legend()
-# plt.ylabel(r'$\Im[\lambda]/k_z$')
+# plt.ylabel(r'$\mathrm{{Im}}[\lambda]/k_z$')
 
+plt.savefig(plot_fname, bbox_inches='tight')
 plt.show()
-# plt.savefig(plot_fname, bbox_inches='tight')

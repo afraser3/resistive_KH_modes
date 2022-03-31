@@ -10,7 +10,7 @@ Pm = 0.1
 N = 33
 delta = 0.0
 out_dir = Path('kolmogorov_2D_scans/Pm{}_N{}_delta{}'.format(Pm, N, delta))
-set_num = 2
+set_num = 5
 out_file = out_dir / 'set_{}.h5'.format(set_num)
 
 plot_fname = 'plots/scan_kmax_energy_Pm{}_N{}_delta{}.pdf'.format(Pm, N, delta)
@@ -47,7 +47,7 @@ plt.colorbar()
 plt.axhline(0.5, c='r', lw=0.5)
 # plt.axvline(Res[50], c='k', ls='-')
 plt.ylabel(r'$C_B$')
-plt.xlabel(r'$\mathrm{Re}$')
+plt.xlabel(r'$Re$')
 plt.title(r'$k_z^\mathrm{{max}}$ for $\mathrm{{Pm}} = {:3.1f}$'.format(Pm))
 
 plt.subplot(1, 2, 2)
@@ -59,7 +59,7 @@ plt.colorbar()
 plt.axhline(0.5, c='r', lw=0.5)
 # plt.axvline(Res[50], c='k', ls='-')
 # plt.ylabel(r'$C_B$')
-plt.xlabel(r'$\mathrm{Re}$')
+plt.xlabel(r'$Re$')
 plt.title(r'$\mathrm{{KE}}/(\mathrm{{KE}} + \mathrm{{ME}})$ for $\mathrm{{Pm}} = {:3.1f}$'.format(Pm))
 
 # plt.show()

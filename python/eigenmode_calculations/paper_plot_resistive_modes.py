@@ -109,10 +109,12 @@ else:
     phi_xz2 = np.real(phi_xz2)
     psi_xz2 = np.real(psi_xz2)
 
-scale = 0.5
+scale = 0.375  # 0.5
 fig = plt.figure(figsize=(scale*25, scale*10))
-gs1 = GridSpec(1, 2, left=0.05, right=0.48, wspace=0.125)
-gs2 = GridSpec(1, 2, left=0.55, right=0.98, wspace=0.125)
+# gs1 = GridSpec(1, 2, left=0.05, right=0.48, wspace=0.125)
+# gs2 = GridSpec(1, 2, left=0.55, right=0.98, wspace=0.125)
+gs1 = GridSpec(1, 2, left=0.05, right=0.48, wspace=0.2)
+gs2 = GridSpec(1, 2, left=0.55, right=0.98, wspace=0.2)
 
 ax1 = fig.add_subplot(gs1[0, 0])
 im1 = ax1.contourf(xs1, zs1, phi_xz1.T)
@@ -135,7 +137,7 @@ im3 = ax3.contourf(xs2, zs2, phi_xz2.T)
 cbar3 = fig.colorbar(im3, ax=ax3)
 ax3.set_title(r'Second resistive mode, $\psi_2$')
 ax3.set_xlabel(r'$x$', fontsize='large')
-ax3.set_ylabel(r'$z$', fontsize='large')
+# ax3.set_ylabel(r'$z$', fontsize='large')
 ax4 = fig.add_subplot(gs2[0, 1])
 im4 = ax4.contourf(xs2, zs2, psi_xz2.T)
 ax4.set_title(r'Second resistive mode, $A_2$')

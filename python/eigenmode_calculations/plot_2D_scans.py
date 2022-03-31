@@ -8,12 +8,12 @@ Pm = 0.1
 N = 33
 delta = 0.0
 out_dir = Path('kolmogorov_2D_scans/Pm{}_N{}_delta{}'.format(Pm, N, delta))
-set_num = 3
+set_num = 2
 out_file = out_dir / 'set_{}.h5'.format(set_num)
 
 plot_fname = 'plots/scan_Pm{}_N{}_delta{}.pdf'.format(Pm, N, delta)
 
-get_contains_arrays = True
+get_contains_arrays = False
 
 with h5py.File(out_file, mode='r') as file:
     ks = np.array(file['scan_values/ks'])
@@ -34,8 +34,8 @@ with h5py.File(out_file, mode='r') as file:
         contains_strange_mode = np.array(file['results/contains_strange_mode'])
         contains_ordinary_mode = np.array(file['results/contains_ordinary_mode'])
 
-plt.figure(figsize=(10.0, 25.0))
-plt.subplot(5, 2, 1)
+plt.figure(figsize=(10.0, 30.0))
+plt.subplot(6, 2, 1)
 plt.pcolormesh(Res, HBs, -np.imag(omegas.T), shading='nearest', norm=colors.LogNorm())
 plt.xscale('log')
 plt.yscale('log')
@@ -43,14 +43,14 @@ plt.colorbar()
 plt.ylabel(r'$H_B^*$')
 plt.title(r'$\gamma$ for $Pm = {:e}$'.format(Pm))
 
-plt.subplot(5, 2, 2)
+plt.subplot(6, 2, 2)
 plt.pcolormesh(Res, HBs, np.abs(np.real(omegas.T)), shading='nearest', norm=colors.LogNorm())
 plt.xscale('log')
 plt.yscale('log')
 plt.colorbar()
 plt.title(r'$|\omega_r|$')
 
-plt.subplot(5, 2, 3)
+plt.subplot(6, 2, 3)
 plt.pcolormesh(Res, HBs, k_maxs.T, shading='nearest', norm=colors.LogNorm())
 plt.xscale('log')
 plt.yscale('log')
@@ -59,7 +59,7 @@ plt.title(r'$k_{max}$')
 plt.ylabel(r'$H_B^*$')
 # plt.xlabel(r'Reynolds number')
 
-plt.subplot(5, 2, 4)
+plt.subplot(6, 2, 4)
 plt.pcolormesh(Res, HBs, num_unstables.T, shading='nearest')
 plt.xscale('log')
 plt.yscale('log')
@@ -69,7 +69,7 @@ if get_contains_arrays:
 plt.title(r'Num unstable modes')
 # plt.xlabel(r'Reynolds number')
 
-plt.subplot(5, 2, 5)
+plt.subplot(6, 2, 5)
 plt.pcolormesh(Res, HBs, KExs.T, shading='nearest')
 plt.xscale('log')
 plt.yscale('log')
@@ -78,7 +78,7 @@ plt.title(r'$KE_x$')
 plt.ylabel(r'$H_B^*$')
 # plt.xlabel(r'Reynolds number')
 
-plt.subplot(5, 2, 6)
+plt.subplot(6, 2, 6)
 plt.pcolormesh(Res, HBs, MExs.T, shading='nearest')
 plt.xscale('log')
 plt.yscale('log')
@@ -86,7 +86,7 @@ plt.colorbar()
 plt.title(r'$ME_x$')
 # plt.xlabel(r'Reynolds number')
 
-plt.subplot(5, 2, 7)
+plt.subplot(6, 2, 7)
 plt.pcolormesh(Res, HBs, KEzs.T, shading='nearest')
 plt.xscale('log')
 plt.yscale('log')
@@ -95,7 +95,7 @@ plt.title(r'$KE_z$')
 plt.ylabel(r'$H_B^*$')
 # plt.xlabel(r'Reynolds number')
 
-plt.subplot(5, 2, 8)
+plt.subplot(6, 2, 8)
 plt.pcolormesh(Res, HBs, MEzs.T, shading='nearest')
 plt.xscale('log')
 plt.yscale('log')
@@ -103,7 +103,24 @@ plt.colorbar()
 plt.title(r'$ME_z$')
 # plt.xlabel(r'Reynolds number')
 
-plt.subplot(5, 2, 9)
+plt.subplot(6, 2, 9)
+plt.pcolormesh(Res, HBs, (KEzs+KExs).T, shading='nearest')
+plt.xscale('log')
+plt.yscale('log')
+plt.colorbar()
+plt.title(r'$KE$')
+plt.ylabel(r'$H_B^*$')
+# plt.xlabel(r'Reynolds number')
+
+plt.subplot(6, 2, 10)
+plt.pcolormesh(Res, HBs, (MEzs+MExs).T, shading='nearest')
+plt.xscale('log')
+plt.yscale('log')
+plt.colorbar()
+plt.title(r'$ME$')
+# plt.xlabel(r'Reynolds number')
+
+plt.subplot(6, 2, 11)
 plt.pcolormesh(Res, HBs, viscous_diss.T, shading='nearest', norm=colors.LogNorm())
 plt.xscale('log')
 plt.yscale('log')
@@ -112,7 +129,7 @@ plt.title(r'Viscous dissipation')
 plt.ylabel(r'$H_B^*$')
 plt.xlabel(r'Reynolds number')
 
-plt.subplot(5, 2, 10)
+plt.subplot(6, 2, 12)
 plt.pcolormesh(Res, HBs, resistive_diss.T, shading='nearest', norm=colors.LogNorm())
 plt.xscale('log')
 plt.yscale('log')
