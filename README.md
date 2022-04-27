@@ -15,6 +15,6 @@ Then, various plotting scripts use those hdf5 files to make figures 1, 2, and 4
 
 Figures 3 and 5 are made using paper_plot_KH_modes.py and paper_plot_resistive_modes.py.
 
-The file python/implicit_alfven_wave.py is a sample script for using Dedalus 
+The file python/dedalus_simulation/MHD_Kolmogorov_2D.py is a sample script for using Dedalus 
 (specifically d2, i.e., the v2_master branch of Dedalus on GitHub) to run the nonlinear simulation whose results are 
-plotted in Figure 10 of the paper.
+plotted in Figure 10 of the paper. The data used to make Figure 10 is also found here, along with the plotting script paper_plot.py. 
