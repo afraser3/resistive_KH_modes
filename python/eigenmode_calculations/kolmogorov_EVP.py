@@ -173,6 +173,96 @@ def Lmat(delta, M2, Re, Rm, k, N, ideal=False):
     return L
 
 
+def Lmat_3D_noP(delta, M2, Re, Rm, ky, kz, N, ideal=False):
+    """
+    Sets up the matrix corresponding to the EVP for 3D perturbations about a sinusoidal shear flow in MHD.
+    The matrix it sets up was derived by first using div(u) = 0 and div(B) = 0 to eliminate pressure.
+    The result is an ordinary EVP, rather than the generalized EVP one would have if pressure were retained.
+    """
+    diss = 1.0 - ideal
+    ns = list(range(-int((N - 1) / 2), int((N + 1) / 2), 1))
+    L = np.zeros((6*N, 6*N), dtype=np.complex128)
+
+    for i, n in enumerate(ns):
+        delta_n = ky**2.0 + kz**2.0 + (n + delta)**2.0
+        # start with the u_n rows
+        if n > ns[0]:
+            L[6*i, 6*(i-1)] = -kz/2.0j  # u_{n-1} column
+        if n < ns[-1]:
+            L[6*i, 6*(i+1)] = kz/2.0j  # u_{n+1} column
+        L[6*i, 6*i] = diss*1.0j*delta_n/Re  # u_n column
+        L[6*i, 6*i+3] = M2*kz  # b_{x,n} column
+        L[6*i, 6*i+5] = -M2*(n + delta)  # b_{z,n} column
+        pfac = (n + delta) / delta_n
+        if n > ns[0]:
+            L[6*i, 6*(i-1)] += pfac * -1.0j * kz
+        if n < ns[-1]:
+            L[6*i, 6*(i+1)] += pfac * -1.0j * kz
+        L[6*i, 6*i+5] += M2 * (n + delta)
+
+        # v_n rows
+        if n > ns[0]:
+            L[6*i+1, 6*(i-1)+1] = -kz/2.0j  # v_{n-1} column
+        if n < ns[-1]:
+            L[6*i+1, 6*(i+1)+1] = kz/2.0j  # v_{n+1} column
+        L[6*i+1, 6*i+1] = diss*1.0j*delta_n/Re  # v_n column
+        L[6*i+1, 6*i+4] = M2*kz  # b_{y,n} column
+        L[6*i+1, 6*i+5] = -M2*ky  # b_{z,n} column
+        pfac = ky / delta_n
+        if n > ns[0]:
+            L[6*i+1, 6*(i-1)] += pfac * -1.0j * kz
+        if n < ns[-1]:
+            L[6*i+1, 6*(i+1)] += pfac * -1.0j * kz
+        L[6*i+1, 6*i+5] += M2 * ky
+
+        # w_n rows
+        if n > ns[0]:
+            L[6*i+2, 6*(i-1)] = 0.5j  # u_{n-1} column
+        if n < ns[-1]:
+            L[6*i+2, 6*(i+1)] = 0.5j  # u_{n+1} column
+        if n > ns[0]:
+            L[6*i+2, 6*(i-1)+2] = -kz/2.0j  # w_{n-1} column
+        if n < ns[-1]:
+            L[6*i+2, 6*(i+1)+2] = kz/2.0j  # w_{n+1} column
+        L[6*i+2, 6*i+2] = diss*1.0j*delta_n/Re  # w_n column
+        pfac = kz / delta_n
+        if n > ns[0]:
+            L[6*i+2, 6*(i-1)] += pfac * -1.0j * kz
+        if n < ns[-1]:
+            L[6*i+2, 6*(i+1)] += pfac * -1.0j * kz
+        L[6*i+2, 6*i+5] += M2 * kz
+
+        # b_{x,n} rows
+        L[6*i+3, 6*i] = kz  # u_n column
+        if n > ns[0]:
+            L[6*i+3, 6*(i-1)+3] = -kz/2.0j  # b_{x,n-1} column
+        if n < ns[-1]:
+            L[6*i+3, 6*(i+1)+3] = kz/2.0j  # b_{x,n+1} column
+        L[6*i+3, 6*i+3] = diss*1.0j*delta_n/Rm  # b_{x,n} column
+
+        # b_{y,n} rows
+        L[6*i+4, 6*i+1] = kz  # v_n column
+        if n > ns[0]:
+            L[6*i+4, 6*(i-1)+4] = -kz/2.0j  # b_{y,n-1} column
+        if n < ns[-1]:
+            L[6*i+4, 6*(i+1)+4] = kz/2.0j  # b_{y,n+1} column
+        L[6*i+4, 6*i+4] = diss*1.0j*delta_n/Rm  # b_{y,n} column
+
+        # b_{z,n} rows
+        L[6*i+5, 6*i] = -(n + delta)  # u_n column
+        L[6*i+5, 6*i+1] = -ky  # v_n column
+        if n > ns[0]:
+            L[6*i+5, 6*(i-1)+3] = (n + delta)/2.0j  # b_{x,n-1} column
+        if n < ns[-1]:
+            L[6*i+5, 6*(i+1)+3] = -(n + delta)/2.0j  # b_{x,n+1} column
+        if n > ns[0]:
+            L[6*i+5, 6*(i-1)+4] = ky/2.0j  # b_{y,n-1} column
+        if n < ns[-1]:
+            L[6*i+5, 6*(i+1)+4] = -ky/2.0j  # b_{y,n+1} column
+        L[6*i+5, 6*i+5] = diss*1.0j*delta_n/Rm  # b_{z,n} column
+    return L
+
+
 def gamfromL(L, withmode=False):
     w, v = np.linalg.eig(L)
     if withmode:
