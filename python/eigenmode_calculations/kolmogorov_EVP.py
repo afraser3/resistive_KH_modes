@@ -67,7 +67,7 @@ def Deln(k, n, delta, finger_norm=False, k0=1.0):  # \Delta_n in my notes. So si
         return k ** 2.0 + (n + delta) ** 2.0
 
 
-def Lmat(delta, M2, Re, Rm, k, N, ideal=False):
+def Lmat(delta, M2, Re, Rm, k, N, ideal=False, inviscid=False):
     """Returns the linear operator for the KH instability
 
     Note that the eigenvalues are the complex frequencies, and the
@@ -103,7 +103,8 @@ def Lmat(delta, M2, Re, Rm, k, N, ideal=False):
     L : 2N x 2N numpy array
         Matrix whose eigenvalues are complex frequencies of KH modes
     """
-    diss = 1.0 - ideal  # =0 for ideal=True, =1 for ideal=False
+    eta_fac = 1.0 - ideal  # =0 for ideal=True, =1 for ideal=False
+    nu_fac = 1.0 - inviscid
     ns = list(range(-int((N - 1) / 2), int((N + 1) / 2), 1))  # the n over which we sum the Fourier series
     ms = list(range(-N + 1, N + 1, 1))  # this is going to be twice as long so we can loop over each n twice, once for phi and once for psi
 
@@ -130,7 +131,7 @@ def Lmat(delta, M2, Re, Rm, k, N, ideal=False):
             if m % 2 == 0:  # phi entries
                 n = m / 2
                 # phi_n, phi_n part
-                L[i, i] = (1.0j) * (diss / Re) * deltan
+                L[i, i] = (1.0j) * (nu_fac / Re) * deltan
                 # phi_n, psi_n part
                 L[i, i + 1] = M2 * k
                 # phi_n, phi_n+1
@@ -146,7 +147,7 @@ def Lmat(delta, M2, Re, Rm, k, N, ideal=False):
                 L[i, i - 2] = k * (1 - deltanm1) / (2.0j * deltan)
             else:  # psi entries
                 # psi_n, psi_n
-                L[i, i] = (1.0j) * deltan * diss / Rm
+                L[i, i] = (1.0j) * deltan * eta_fac / Rm
                 # psi_n, phi_n
                 L[i, i - 1] = k
                 # psi_n, psi_n+1
@@ -155,19 +156,19 @@ def Lmat(delta, M2, Re, Rm, k, N, ideal=False):
                 L[i, i - 2] = -k / (2.0j)
     # now do the edges
     # first, the most negative phi
-    L[0, 0] = (1.0j) * delns_m[0] * diss / Re
+    L[0, 0] = (1.0j) * delns_m[0] * nu_fac / Re
     L[0, 1] = M2 * k
     L[0, 2] = -k * (1 - delns_m[2]) / (2.0j * delns_m[0])
     # most negative psi
-    L[1, 1] = (1.0j) * delns_m[1] * diss / Rm
+    L[1, 1] = (1.0j) * delns_m[1] * eta_fac / Rm
     L[1, 0] = k
     L[1, 3] = k / (2.0j)
     # most positive phi
-    L[-2, -2] = (1.0j) * delns_m[-2] * diss / Re
+    L[-2, -2] = (1.0j) * delns_m[-2] * nu_fac / Re
     L[-2, -1] = M2 * k
     L[-2, -4] = k * (1 - delns_m[-4]) / (2.0j * delns_m[-2])
     # most positive psi
-    L[-1, -1] = (1.0j) * delns_m[-1] * diss / Rm
+    L[-1, -1] = (1.0j) * delns_m[-1] * eta_fac / Rm
     L[-1, -2] = k
     L[-1, -3] = -k / (2.0j)
     return L
@@ -296,12 +297,12 @@ def gamfromparams(delta, M2, Re, Rm, k, N, ideal, withmode=False):
     return gamfromL(L, withmode)
 
 
-def gamma_over_k(delta, M2, Re, Rm, ks, N, ideal=False):
-    return [gamfromL(Lmat(delta, M2, Re, Rm, k, N, ideal)) for k in ks]
+def gamma_over_k(delta, M2, Re, Rm, ks, N, ideal=False, inviscid=False):
+    return [gamfromL(Lmat(delta, M2, Re, Rm, k, N, ideal, inviscid)) for k in ks]
 
 
-def omega_over_k(delta, M2, Re, Rm, ks, N, ideal=False):
-    return [omegafromL(Lmat(delta, M2, Re, Rm, k, N, ideal)) for k in ks]
+def omega_over_k(delta, M2, Re, Rm, ks, N, ideal=False, inviscid=False):
+    return [omegafromL(Lmat(delta, M2, Re, Rm, k, N, ideal, inviscid)) for k in ks]
 
 
 def energy_from_streamfunc(field, k, kxs, xy_parts=False):
