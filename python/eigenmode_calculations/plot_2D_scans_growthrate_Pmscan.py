@@ -71,6 +71,7 @@ ax1.contourf(Res1, HBs1, contains_ordinary_mode1.astype(int).T, [-1, 0, 1], hatc
 ax1.contour(Res1, HBs1, contains_ordinary_mode1.astype(int).T, [0, 1], colors='k', linewidths=2.0)
 ax1.contourf(Res1, HBs1, contains_strange_mode1.astype(int).T, [-1, 0, 1], hatches=[None, '/', None], alpha=0)
 ax1.contour(Res1, HBs1, contains_strange_mode1.astype(int).T, [0, 1], colors='k', linewidths=2.0)
+ax1.plot([10, 500, 10, 500], [0.2, 0.2, 1.0, 1.0], 'd', c='magenta')
 ax1.set_ylabel(r'$C_B$')
 # plt.xlabel(r'$\mathrm{Re}$')
 # ax1.set_title(r'$\mathrm{{Re}}[\lambda]$ for $Pm = {:3.1f}$'.format(Pm1))
@@ -97,6 +98,7 @@ ax3.contourf(Res3, HBs3, contains_ordinary_mode3.astype(int).T, [-1, 0, 1], hatc
 ax3.contour(Res3, HBs3, contains_ordinary_mode3.astype(int).T, [0, 1], colors='k', linewidths=2.0)
 ax3.contourf(Res3, HBs3, contains_strange_mode3.astype(int).T, [-1, 0, 1], hatches=[None, '/', None], alpha=0)
 ax3.contour(Res3, HBs3, contains_strange_mode3.astype(int).T, [0, 1], colors='k', linewidths=2.0)
+ax3.plot([10, 500, 500], [0.2, 0.2, 0.6], 'd', c='magenta')
 # re2 = 1e3
 # cb2 = 6e-1  # cb1*(re1/re2)**2.0
 # cb1 = 1e0  # cb2*(re2/re1)**2.0
@@ -118,5 +120,5 @@ for ax in [ax2, ax3]:
 
 ax1.axvline(np.sqrt(2*1.1/(0.1*0.9)), c='r')
 
-# plt.show()
-plt.savefig(plot_fname, bbox_inches='tight')
+plt.show()
+# plt.savefig(plot_fname, bbox_inches='tight')
