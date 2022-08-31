@@ -13,7 +13,7 @@ out_dir = Path('kolmogorov_2D_scans/Pm{}_N{}_delta{}'.format(Pm, N, delta))
 set_num = 5
 out_file = out_dir / 'set_{}.h5'.format(set_num)
 
-plot_fname = 'plots/scan_phasevelocity_Pm{}_N{}_delta{}.pdf'.format(Pm, N, delta)
+plot_fname = 'plots/scan_phasevelocity_Pm{}_N{}_delta{}.eps'.format(Pm, N, delta)
 
 with h5py.File(out_file, mode='r') as file:
     ks = np.array(file['scan_values/ks'])
@@ -53,7 +53,7 @@ plt.loglog(HBs, freqs[50]/k_maxs[50], label=r'$|\mathrm{{Im}}[\lambda]|/k_z$')
 plt.loglog(HBs, np.sqrt(HBs), ls='--', c='k', label=r'$\sqrt{C_B}$')
 plt.xlabel(r'$C_B$')
 plt.legend()
-# plt.ylabel(r'$\mathrm{{Im}}[\lambda]/k_z$')
+plt.xlim((1e-1, 1e2))
 
 plt.savefig(plot_fname, bbox_inches='tight')
-plt.show()
+# plt.show()
