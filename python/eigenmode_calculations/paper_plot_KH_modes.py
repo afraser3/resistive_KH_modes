@@ -18,7 +18,7 @@ mode_amplitude = 100.0
 
 delta = 0.0
 N = 33
-plot_fname = 'plots/KH_mode_structures.pdf'
+plot_fname = 'plots/KH_mode_structures.eps'
 ns = np.array(range(-int((N - 1) / 2), int((N + 1) / 2), 1))  # these are wavenumbers in shear direction
 # ns_ishift = np.fft.ifftshift(ns)  # same thing, but with 'standard' FFTW order, i.e., [0, 1, 2, ..., -2, -1]
 
