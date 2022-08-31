@@ -8,13 +8,11 @@ plt.rcParams.update({"text.usetex": True})
 Pm = 0.1
 CB = 1.0
 Re = 100.0
-#CB = 31.4  # 1.0  # 0.55  # 1.0
-#Re = 17.8  # 100.0  # 1000.0  # 100.0
 Rm = Pm * Re
 
 delta = 0.0
 N = 33
-plot_fname = 'plots/resistive_mode_structures_isolated.pdf'
+plot_fname = 'plots/resistive_mode_structures_isolated.eps'
 ns = np.array(range(-int((N - 1) / 2), int((N + 1) / 2), 1))  # these are wavenumbers in shear direction
 # ns_ishift = np.fft.ifftshift(ns)  # same thing, but with 'standard' FFTW order, i.e., [0, 1, 2, ..., -2, -1]
 
@@ -64,28 +62,22 @@ full_mode1 = v[:, ind1]
 phi1 = full_mode1[::2]
 psi1 = full_mode1[1::2]
 norm1_phi = phi1[int(len(ns)/2)+1]
-# norm1_psi = psi1[int(len(ns)/2)+1]
 phi1 = phi1/norm1_phi
 psi1 = psi1/norm1_phi
 TE1 = kolmogorov_EVP.energy_from_streamfunc(phi1, kmax, ns) + CB*kolmogorov_EVP.energy_from_streamfunc(psi1, kmax, ns)
 phi1 = phi1/np.sqrt(TE1)
 psi1 = psi1/np.sqrt(TE1)
-# phi1 = phi1*2000.0
-# psi1 = psi1*2000.0
 
 omega2 = w[ind2]
 full_mode2 = v[:, ind2]
 phi2 = full_mode2[::2]
 psi2 = full_mode2[1::2]
 norm2_phi = phi2[int(len(ns)/2)+1]
-# norm2_psi = psi2[int(len(ns)/2)+1]
 phi2 = -phi2/norm2_phi
 psi2 = -psi2/norm2_phi
 TE2 = kolmogorov_EVP.energy_from_streamfunc(phi2, kmax, ns) + CB*kolmogorov_EVP.energy_from_streamfunc(psi2, kmax, ns)
 phi2 = phi2/np.sqrt(TE2)
 psi2 = psi2/np.sqrt(TE2)
-# phi2 = phi2*2000.0
-# psi2 = psi2*2000.0
 
 phi_ishift1 = np.fft.ifftshift(phi1)
 psi_ishift1 = np.fft.ifftshift(psi1)
@@ -111,8 +103,6 @@ else:
 
 scale = 0.375  # 0.5
 fig = plt.figure(figsize=(scale*25, scale*10))
-# gs1 = GridSpec(1, 2, left=0.05, right=0.48, wspace=0.125)
-# gs2 = GridSpec(1, 2, left=0.55, right=0.98, wspace=0.125)
 gs1 = GridSpec(1, 2, left=0.05, right=0.48, wspace=0.2)
 gs2 = GridSpec(1, 2, left=0.55, right=0.98, wspace=0.2)
 
@@ -121,32 +111,24 @@ im1 = ax1.contourf(xs1, zs1, phi_xz1.T)
 cbar1 = fig.colorbar(im1, ax=ax1)
 ax1.set_ylabel(r'$z$', fontsize='large')
 ax1.set_xlabel(r'$x$', fontsize='large')
-# plt.title(r'$\psi$, fastest-growing mode, $Re = {}$, $C_B = {}$'.format(int(Re1), HB1), fontsize='large')
-# plt.title(r'Fastest-growing mode, $Re = {}$, $C_B = {}$'.format(int(Re1), HB1), fontsize='large')
-ax1.set_title(r'First resistive mode, $\psi_1$')
+ax1.set_title(r'First ADF mode, $\psi_1$')
 ax2 = fig.add_subplot(gs1[0, 1])
 im2 = ax2.contourf(xs1, zs1, psi_xz1.T)
 cbar2 = fig.colorbar(im2, ax=ax2)
 ax2.set_xlabel(r'$x$', fontsize='large')
-# plt.title(r'$A$, fastest-growing mode, $Re = {}$, $C_B = {}$'.format(int(Re1), HB1), fontsize='large')
-ax2.set_title(r'First resistive mode, $A_1$')
+ax2.set_title(r'First ADF mode, $A_1$')
 
 
 ax3 = fig.add_subplot(gs2[0, 0])
 im3 = ax3.contourf(xs2, zs2, phi_xz2.T)
 cbar3 = fig.colorbar(im3, ax=ax3)
-ax3.set_title(r'Second resistive mode, $\psi_2$')
+ax3.set_title(r'Second ADF mode, $\psi_2$')
 ax3.set_xlabel(r'$x$', fontsize='large')
-# ax3.set_ylabel(r'$z$', fontsize='large')
 ax4 = fig.add_subplot(gs2[0, 1])
 im4 = ax4.contourf(xs2, zs2, psi_xz2.T)
-ax4.set_title(r'Second resistive mode, $A_2$')
-# plt.ylabel(r'$z$')
+ax4.set_title(r'Second ADF mode, $A_2$')
 ax4.set_xlabel(r'$x$', fontsize='large')
 cbar4 = fig.colorbar(im4, ax=ax4)
-#plt.colorbar(label=r'$A$')
-# plt.title(r'$A$, fastest-growing mode, $Re = {}$, $C_B = {}$'.format(int(Re2), HB2), fontsize='large')
-# plt.subplots_adjust(hspace=0.1)
 
 for ax in [ax2, ax4]:
     ax.tick_params(labelleft=False)
