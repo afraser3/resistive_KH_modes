@@ -1,5 +1,6 @@
 import numpy as np
 import h5py
+import matplotlib
 from matplotlib import pyplot as plt
 from pathlib import Path
 import matplotlib.colors as colors
@@ -19,7 +20,7 @@ out_dirs = [Path('kolmogorov_ky_kz_scans/Pm{}_HB{}_Re{}_N{}_delta{}'.format(Pm, 
 set_nums = [0, 0, 1]
 out_files = [out_dirs[i] / 'set_{}.h5'.format(set_nums[i]) for i in range(len(Res))]
 
-plot_fname = 'plots/ky_kz_scans_Pm{}.pdf'.format(Pm)
+plot_fname = 'plots/ky_kz_scans_Pm{}.eps'.format(Pm)
 
 scale = 0.6
 # plt.figure(figsize=(scale*14, scale*10))
