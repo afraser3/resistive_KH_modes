@@ -1,8 +1,8 @@
 # resistive_KH_modes
-Code corresponding to Fraser, Cresswell, Garaud 2022 paper on resistive shear flow instabilities in MHD, 
-preprint available at [arXiv:2204.10875](https://arxiv.org/abs/2204.10875).
+Code corresponding to most of the figures in Fraser, Cresswell, Garaud 2022 JFM paper on non-ideal shear flow instabilities in MHD, 
+preprint available at [arXiv:2204.10875](https://arxiv.org/abs/2204.10875) (note the [publication](https://doi.org/10.1017/jfm.2022.782) has a few updates that aren't in the preprint, primarily some scans over 3D perturbations -- I'll update the arXiv listing once the journal gives me permission to).
 
-The direcotry python/eigenmode_calculations/ has all the code needed to make figures 1-5. 
+The directory python/eigenmode_calculations/ has all the code needed to make figures 1-5. 
 Most of it is in kolmogorov_EVP.py, which includes various methods for calculating the eigenmodes of a sinusoidal 
 shear flow with a uniform, streamwise magnetic field. 
 All the other scripts in that directory use kolmogorov_EVP.py to make various figures 
